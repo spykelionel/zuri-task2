@@ -1,10 +1,11 @@
 const express = require("express");
+const cors = require('cors')
 const app = express();
 
 
 app.use(express.urlencoded({extended:true}))
 app.use(express.json())
-
+app.use(cors({origin: ["*"]}))
 app.post("/", (req, res) => {
   const {operation_type, x, y, } = req.body
   let result = 0
@@ -41,7 +42,7 @@ app.post("/", (req, res) => {
       message: "operation not found"
     })
   }
-  
+
   switch(operation){
     case "addition": {
         result =(x || y)?parseInt(x)+parseInt(y):x1+y1
@@ -69,7 +70,9 @@ app.post("/", (req, res) => {
 
 app.get('/', (req, res)=>{
  
-  
+  res.status(200).json({
+    message: "send a post request to /"
+  })
 })
 
 app.listen(process.env.PORT || 4000, _=>{
